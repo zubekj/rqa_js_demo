@@ -1,20 +1,31 @@
 import React from 'react';
 import TimeseriesPlot from './TimeseriesPlot.jsx';
 import RPlot from './RPlot.jsx';
+import RQAStats from './RQAStats.jsx';
+import ColumnSelect from './ColumnSelect.jsx';
 
 class RQAContext extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {tsdata: [0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1]};
+        this.state = {tsdata: [0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1], columnNames: [], columns: [], selectedColumn: 0};
 
         // This binding is necessary to make `this` work in the callback
         this.handleClick = this.handleClick.bind(this);
         this.handleFile = this.handleFile.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.loadHandler = this.loadHandler.bind(this);
     }
 
     handleClick() {
+        this.setState({tsdata: this.state.columns[this.state.selectedColumn]});
+    }
+
+    handleChange(event) {
+        this.setState({selectedColumn: event.target.value});
+    }
+
+    handleFile(event) {
         // Check for the various File API support.
         if (window.FileReader) {
             // FileReader are supported.
@@ -22,28 +33,30 @@ class RQAContext extends React.Component {
           	reader.onload = this.loadHandler;
         	reader.onerror = this.errorHandler;
         	// Read file into memory as UTF-8      
-        	reader.readAsText(this.state.selectedFile);
+        	reader.readAsText(event.target.files[0]);
         } else {
             alert('FileReader are not supported in this browser.');
         }
     }
 
     loadHandler(event) {
-	    var csv = event.target.result;
-        var allTextLines = csv.split(/\r\n|\n/);
-        var lines = allTextLines.map(Number);
-        this.setState({tsdata: lines});
-        console.log(lines);
+        const csv = event.target.result;
+        const allTextLines = csv.split(/\r\n|\n/);
+        const colNames = allTextLines[0].split(",");
+        const columns = [];
+        colNames.forEach(x => columns.push([]));
+
+        for(var i = 1; i < allTextLines.length; i++) {
+            allTextLines[i].split(",").forEach((x, j) => columns[j].push(x));
+        }
+        this.setState({columnNames: colNames});
+        this.setState({columns: columns});
     }
 
     errorHandler(evt) {
 	    if(evt.target.error.name === "NotReadableError") {
 		    alert("Cannot read file!");
 	    }
-    }
-
-    handleFile(event) {
-        this.setState({selectedFile: event.target.files[0]});
     }
 
     calculate_rplot(data) {
@@ -65,9 +78,11 @@ class RQAContext extends React.Component {
         return (
             <div>
             <input type="file" id="csvFileInput" onChange={this.handleFile} accept=".csv" />
+            <ColumnSelect columns={this.state.columnNames} handleChange={this.handleChange} />
             <button onClick={this.handleClick}>Update plot</button>
             <TimeseriesPlot tsdata={tsdata} />
             <RPlot rpdata={rpdata} />
+            <RQAStats rpdata={rpdata} />
             </div>
         );
     }
