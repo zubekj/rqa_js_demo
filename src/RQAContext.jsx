@@ -4,6 +4,11 @@ import RPlot from './RPlot.jsx';
 import RQAStats from './RQAStats.jsx';
 import ColumnSelect from './ColumnSelect.jsx';
 
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+
 class RQAContext extends React.Component {
 
     constructor(props) {
@@ -76,14 +81,24 @@ class RQAContext extends React.Component {
         const rpdata = this.calculate_rplot(tsdata);
 
         return (
-            <div>
-            <input type="file" id="csvFileInput" onChange={this.handleFile} accept=".csv" />
-            <ColumnSelect columns={this.state.columnNames} handleChange={this.handleChange} />
-            <button onClick={this.handleClick}>Update plot</button>
-            <TimeseriesPlot tsdata={tsdata} />
-            <RPlot rpdata={rpdata} />
-            <RQAStats rpdata={rpdata} />
-            </div>
+            <Container>
+                <Row>
+                    <Col sm={3}>
+                        <div class="mt-5">
+                        <h3>Data loading</h3>
+                        <p>Upload a CSV file with your time series.</p>
+                        <input type="file" id="csvFileInput" onChange={this.handleFile} accept=".csv" /><br />
+                        <ColumnSelect columns={this.state.columnNames} handleChange={this.handleChange} /><br />
+                        <button onClick={this.handleClick}>Update plot</button>
+                        </div>
+                    </Col>
+                    <Col><TimeseriesPlot tsdata={tsdata} /></Col>
+                </Row>
+                <Row>
+                    <Col sm={3}><RQAStats rpdata={rpdata} /></Col>
+                    <Col><RPlot rpdata={rpdata} /></Col>
+                </Row>
+            </Container>
         );
     }
 }

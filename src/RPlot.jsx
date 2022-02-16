@@ -12,7 +12,7 @@ class RPlot extends React.Component {
 
         return (
             <div>
-            <Plot data={[{z: rpdata, type: 'heatmap'}]} />
+            <Plot data={[{z: rpdata, type: 'heatmap'}]} layout={{width: 800, height: 800}} />
             </div>
         );
     }

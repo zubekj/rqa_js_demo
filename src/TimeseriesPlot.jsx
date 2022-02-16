@@ -13,7 +13,7 @@ class TimeseriesPlot extends React.Component {
 
         return (
             <div>
-            <Plot data={[{x: keys, y: tsdata}]} />
+            <Plot data={[{x: keys, y: tsdata}]} layout={{width: 800, height: 450}} />
             </div>
         );
     }

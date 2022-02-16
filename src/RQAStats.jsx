@@ -16,7 +16,8 @@ class RQAStats extends React.Component {
         const rpdata = this.props.rpdata;
 
         return (
-            <div>
+            <div class="mt-5">
+                <h3>RQA measures</h3>
                 RR = {this.calcRR(rpdata)}
             </div>
         );

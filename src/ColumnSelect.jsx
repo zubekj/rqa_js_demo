@@ -14,9 +14,12 @@ class ColumnSelect extends React.Component {
         );
 
         return (
+            <div>
+            <label for="colSelect">Select column:</label><br />
             <select name="colSelect" id="colSelect" onChange={this.props.handleChange}>
                 {items}
             </select>
+            </div>
         );
     }
 }
