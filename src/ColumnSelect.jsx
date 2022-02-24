@@ -5,7 +5,7 @@ class ColumnSelect extends React.Component {
     render() {
         const columns = this.props.columns;
         
-        if(columns.length == 0) {
+        if(columns.length === 0) {
             return null;
         }
 
@@ -15,7 +15,7 @@ class ColumnSelect extends React.Component {
 
         return (
             <div>
-            <label for="colSelect">Select column:</label><br />
+            <label htmlFor="colSelect">Select column:</label><br />
             <select name="colSelect" id="colSelect" onChange={this.props.handleChange}>
                 {items}
             </select>

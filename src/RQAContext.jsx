@@ -13,7 +13,7 @@ class RQAContext extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {tsdata: [0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1], columnNames: [], columns: [], selectedColumn: 0};
+        this.state = {tsdata: [0, 1, 0, 1], columnNames: [], columns: [], selectedColumn: 0};
 
         // This binding is necessary to make `this` work in the callback
         this.handleClick = this.handleClick.bind(this);
@@ -84,7 +84,7 @@ class RQAContext extends React.Component {
             <Container>
                 <Row>
                     <Col sm={3}>
-                        <div class="mt-5">
+                        <div className="mt-5">
                         <h3>Data loading</h3>
                         <p>Upload a CSV file with your time series.</p>
                         <input type="file" id="csvFileInput" onChange={this.handleFile} accept=".csv" /><br />
