@@ -3,10 +3,6 @@ import Plot from 'react-plotly.js';
 
 class TimeseriesPlot extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const tsdata = this.props.tsdata;
         const keys = [...Array(tsdata.length).keys()] 

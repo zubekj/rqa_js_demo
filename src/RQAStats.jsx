@@ -1,22 +1,10 @@
 import React from 'react';
 
-function makeDefaultDict(factory) {
-    return new Proxy({}, {
-        get(target, name) {
-            if (!(name in target)) {
-                target[name] = factory()
-            }
-            return target[name]
-        }
-    })
-}
-
 
 class RQAStats extends React.Component {
 
     calcRR(rpdata, minLine=2) {
 
-        var diagHist = {};
         function incrementHist(hist, key) {
             if(!(key in hist)) hist[key] = 0;
             return hist[key]++;

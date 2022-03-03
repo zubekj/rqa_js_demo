@@ -3,10 +3,6 @@ import Plot from 'react-plotly.js';
 
 class RPlot extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const rpdata = this.props.rpdata;
 
