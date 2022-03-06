@@ -1,10 +1,27 @@
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 import './App.css';
-import RQAContext from './RQAContext.jsx';
+import {RQACategoricalContext, RQAContinuousContext} from './RQAContext.jsx';
+
 
 function App() {
   return (
     <div className="App">
-      <RQAContext />
+      <Tabs>
+        <TabList>
+          <Tab>Categorical RQA</Tab>
+          <Tab>Continuous RQA</Tab>
+        </TabList>
+
+        <TabPanel>
+          <RQACategoricalContext />
+        </TabPanel>
+        <TabPanel>
+          <RQAContinuousContext />
+        </TabPanel>
+      </Tabs>
+
+
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-class RQAStats extends React.Component {
+class RQAStats extends React.PureComponent {
 
     calcRR(rpdata, minLine=2) {
 
@@ -108,6 +108,7 @@ class RQAStats extends React.Component {
 
     render() {
         const rpdata = this.props.rpdata;
+
         let { RR, DET, L, Lmax, ENTR, TT, Vmax } = this.calcRR(rpdata);
 
         return (

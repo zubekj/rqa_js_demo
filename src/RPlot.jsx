@@ -1,7 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 
-class RPlot extends React.Component {
+class RPlot extends React.PureComponent {
 
     render() {
         const rpdata = this.props.rpdata;
