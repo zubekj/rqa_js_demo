@@ -3,7 +3,7 @@ import React from 'react';
 
 class RQAStats extends React.PureComponent {
 
-    calcRR(rpdata, minLine=2) {
+    calcRR(rpdata, minLine=2, removeMainDiag=true) {
 
         function incrementHist(hist, key) {
             if(!(key in hist)) hist[key] = 0;
@@ -35,16 +35,18 @@ class RQAStats extends React.PureComponent {
             incrementHist(diagHist, diagCountU);
         }
         // main diagonal
-        diagCountL = 0;
-        for(j = 0; j < rpdata.length; j++) {
-            if(rpdata[j][j] === 1) {
-                diagCountL++;
-            } else {
-                incrementHist(diagHist, diagCountL);
-                diagCountL = 0;
+        if(!removeMainDiag) {
+            diagCountL = 0;
+            for(j = 0; j < rpdata.length; j++) {
+                if(rpdata[j][j] === 1) {
+                    diagCountL++;
+                } else {
+                    incrementHist(diagHist, diagCountL);
+                    diagCountL = 0;
+                }
             }
+            incrementHist(diagHist, diagCountL);
         }
-        incrementHist(diagHist, diagCountL);
 
         // histogram of vertical line lengths
         var vertHist = {};

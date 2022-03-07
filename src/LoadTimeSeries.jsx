@@ -10,7 +10,7 @@ class LoadTimeSeries extends React.Component {
     constructor(props) {
         super(props);
        
-        this.state = {columnNames: [], columns: [], selectedColumn: 0};
+        this.state = {columnNames: [], columns: [], selectedColumn: -1};
 
         // This binding is necessary to make `this` work in the callback
         this.handleFile = this.handleFile.bind(this);
@@ -19,8 +19,13 @@ class LoadTimeSeries extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({selectedColumn: event.target.value});
-        this.props.updateTSData(this.state.columns[event.target.value]);
+        const val = Number(event.target.value);
+        this.setState({selectedColumn: val});
+        if(val > -1 && val < this.state.columns.length) {
+            this.props.updateTSData(this.state.columns[val]);
+        } else {
+            this.props.updateTSData([]);
+        }
     }
 
     handleFile(event) {
@@ -50,7 +55,7 @@ class LoadTimeSeries extends React.Component {
         this.setState({columnNames: colNames});
         this.setState({columns: columns});
         
-        this.props.updateTSData(columns[0]);
+        this.props.updateTSData([]);
     }
 
     errorHandler(evt) {
@@ -69,7 +74,7 @@ class LoadTimeSeries extends React.Component {
                     <h3>Data loading</h3>
                     <p>Upload a CSV file with your time series.</p>
                     <input type="file" id="csvFileInput" onChange={this.handleFile} accept=".csv" /><br />
-                    <ColumnSelect columns={this.state.columnNames} handleChange={this.handleChange} /><br />
+                    <ColumnSelect columns={this.state.columnNames} selected={this.state.selectedColumn} handleChange={this.handleChange} /><br />
                     </div>
                 </Col>
                 <Col><TimeseriesPlot tsdata={tsdata} /></Col>
