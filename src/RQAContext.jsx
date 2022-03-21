@@ -111,9 +111,9 @@ class RQAContinuousContext extends RQAContext {
         const name = target.name;
 
         if(name === "dimension" || name === "delay") {
-            if(Number(value) <= 0 || !Number.isInteger(Number(value))) return false;
+            if(Number(value) < 0 || !Number.isInteger(Number(value))) return false;
         } else if(name === "threshold") {
-            if(Number(value) <= 0) return false;
+            if(Number(value) < 0) return false;
         }
 
         this.setState({[name]: value});
