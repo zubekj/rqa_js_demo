@@ -10,11 +10,12 @@ class LoadTimeSeries extends React.Component {
     constructor(props) {
         super(props);
        
-        this.state = {columnNames: [], columns: [], selectedColumn: -1};
+        this.state = {columnNames: [], columns: [], selectedColumn: -1, selectedColumn2: -1};
 
         // This binding is necessary to make `this` work in the callback
         this.handleFile = this.handleFile.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleChange2 = this.handleChange2.bind(this);
         this.loadHandler = this.loadHandler.bind(this);
     }
 
@@ -27,6 +28,17 @@ class LoadTimeSeries extends React.Component {
             this.props.updateTSData([]);
         }
     }
+
+    handleChange2(event) {
+        const val = Number(event.target.value);
+        this.setState({selectedColumn2: val});
+        if(val > -1 && val < this.state.columns.length) {
+            this.props.updateTSData2(this.state.columns[val]);
+        } else {
+            this.props.updateTSData2([]);
+        }
+    }
+
 
     handleFile(event) {
         // Check for the various File API support.
@@ -55,7 +67,11 @@ class LoadTimeSeries extends React.Component {
         this.setState({columnNames: colNames});
         this.setState({columns: columns});
         
+        this.setState({selectedColumn: -1});
+        this.setState({selectedColumn2: -1});
+
         this.props.updateTSData([]);
+        this.props.updateTSData2([]);
     }
 
     errorHandler(evt) {
@@ -65,20 +81,28 @@ class LoadTimeSeries extends React.Component {
     }
 
     render() {
-        const tsdata = this.props.tsdata;
+        const tsplot = <TimeseriesPlot tsdata={this.props.tsdata} />;
+        const tsplot2 = this.props.tsdata2.length > 0 ? <TimeseriesPlot tsdata={this.props.tsdata2} /> : null;
        
         return (
+            <div>
             <Row>
                 <Col sm={3}>
                     <div className="mt-5">
                     <h3>Data loading</h3>
                     <p>Upload a CSV file with your time series.</p>
                     <input type="file" id="csvFileInput" onChange={this.handleFile} accept=".csv" /><br />
-                    <ColumnSelect columns={this.state.columnNames} selected={this.state.selectedColumn} handleChange={this.handleChange} /><br />
+                    <ColumnSelect label="Select column:" columns={this.state.columnNames} selected={this.state.selectedColumn} handleChange={this.handleChange} /><br />
+                    <ColumnSelect label="Select second column (for cRQA only):" columns={this.state.columnNames} selected={this.state.selectedColumn2} handleChange={this.handleChange2} /><br />
                     </div>
                 </Col>
-                <Col><TimeseriesPlot tsdata={tsdata} /></Col>
+                <Col>{tsplot}</Col>
             </Row>
+            <Row>
+                <Col sm={3}></Col>
+                <Col>{tsplot2}</Col>
+            </Row>
+            </div>
         );
     }
 

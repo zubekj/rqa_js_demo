@@ -1,90 +1,10 @@
 import React from 'react';
-import LoadTimeSeries from './LoadTimeSeries.jsx';
 import RPlot from './RPlot.jsx';
 import RQAStats from './RQAStats.jsx';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
-/**
- * Abstract Class RQAContext.
- *
- * To be extended by classes implementing categorical and continuous RQA.
- *
- * @class RQAContext
- */
-class RQAContext extends React.Component {
-
-    constructor(props) {
-        super(props);
-       
-        if (this.constructor === RQAContext) {
-            throw new Error("Abstract classes can't be instantiated.");
-        }
-
-        this.state = {rpdata: []};
-
-        // This binding is necessary to make `this` work in the callback
-        this.calculateRplot = this.calculateRplot.bind(this);
-    }
-
-    calculateRplot() {
-        throw new Error("Method 'calculateRplot()' must be implemented.");
-    }
-
-    renderRQAParameters() {
-        throw new Error("Method 'renderRQAParameters()' must be implemented.");
-    }
-
-    render() {
-        const rpdata = this.state.rpdata;
-
-        return (
-            <Container>
-                {this.renderRQAParameters()}
-                <Row>
-                    <Col sm={3}><RQAStats rpdata={rpdata} />
-                    <button onClick={this.calculateRplot}>Run RQA</button>
-                    </Col>
-                    <Col><RPlot rpdata={rpdata} /></Col>
-                </Row>
-            </Container>
-        );
-    }
-}
-
-
-/**
- * RQACategoricalContext.
- *
- * Implements categorical RQA.
- *
- * @class RQACategoricalContext
- * @extends {RQAContext}
- */
-class RQACategoricalContext extends RQAContext {
-
-    calculateRplot() {
-        const data = this.props.tsdata;
-
-        var res = new Array(data.length);
-        for(var i = 0; i < res.length; i++) {
-            var resi = new Array(data.length);
-            for(var j = 0; j < resi.length; j++) {
-                resi[j] = Number(data[i] === data[j]);
-            }
-            res[i] = resi;
-        }
-
-        this.setState({rpdata: res});
-    }
-
-    renderRQAParameters() {
-        return null;
-    }
-
-}
 
 /**
  * RQAContinuousContext.
@@ -94,15 +14,16 @@ class RQACategoricalContext extends RQAContext {
  * @class RQAContinuousContext
  * @extends {RQAContext}
  */
-class RQAContinuousContext extends RQAContext {
+class RQAContinuousContext extends React.Component {
 
-    constructor(props) {
+   constructor(props) {
         super(props);
-      
+
         this.state = {rpdata: [], dimension: 1, delay: 1, threshold: 0.1};
 
         // This binding is necessary to make `this` work in the callback
         this.handleParameterChange = this.handleParameterChange.bind(this);
+        this.calculateRplot = this.calculateRplot.bind(this);
     }
 
     handleParameterChange(event) {
@@ -191,7 +112,21 @@ class RQAContinuousContext extends RQAContext {
         );
     }
 
+    render() {
+        const rpdata = this.state.rpdata;
+
+        return (
+            <Container>
+                {this.renderRQAParameters()}
+                <Row>
+                    <Col sm={3}><RQAStats rpdata={rpdata} />
+                    <button onClick={this.calculateRplot}>Run RQA</button>
+                    </Col>
+                    <Col><RPlot rpdata={rpdata} /></Col>
+                </Row>
+            </Container>
+        );
+    }
 }
 
-export default RQAContext;
-export { RQACategoricalContext, RQAContinuousContext };
+export default RQAContinuousContext;

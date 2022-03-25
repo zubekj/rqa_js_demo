@@ -15,7 +15,7 @@ class ColumnSelect extends React.Component {
 
         return (
             <div>
-            <label htmlFor="colSelect">Select column:</label><br />
+            <label htmlFor="colSelect">{this.props.label}</label><br />
             <select name="colSelect" id="colSelect" onChange={this.props.handleChange} value={this.props.selected}>
                 <option value="-1" key="-1">*None*</option>
                 {items}

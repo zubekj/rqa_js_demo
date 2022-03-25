@@ -1,7 +1,8 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import './App.css';
-import {RQACategoricalContext, RQAContinuousContext} from './RQAContext.jsx';
+import RQACategoricalContext from './RQACategoricalContext.jsx';
+import RQAContinuousContext from './RQAContinuousContext.jsx';
 import AverageMutualInformationContext from './AverageMutualInformationContext.jsx';
 import FalseNeighborsContext from './FalseNeighborsContext.jsx';
 
@@ -9,27 +10,32 @@ import React from 'react';
 import LoadTimeSeries from './LoadTimeSeries.jsx';
 
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {tsdata: [0, 1, 0, 1]};
+        this.state = {tsdata: [0, 1, 0, 1], tsdata2: []};
         this.updateTSData = this.updateTSData.bind(this);
+        this.updateTSData2 = this.updateTSData2.bind(this);
     }
 
     updateTSData(data) {
         this.setState({tsdata: data});
     }
 
+    updateTSData2(data) {
+        this.setState({tsdata2: data});
+    }
+
+
     render() {
       return (
         <div className="App">
         <Container>
-          <LoadTimeSeries tsdata={this.state.tsdata} updateTSData={this.updateTSData} />
+          <LoadTimeSeries tsdata={this.state.tsdata} tsdata2={this.state.tsdata2}
+            updateTSData={this.updateTSData} updateTSData2={this.updateTSData2} />
           <Tabs>
             <TabList>
               <Tab>Categorical RQA</Tab>

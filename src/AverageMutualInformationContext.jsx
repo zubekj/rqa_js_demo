@@ -1,5 +1,4 @@
 import React from 'react';
-import LoadTimeSeries from './LoadTimeSeries.jsx';
 import TimeseriesPlot from './TimeseriesPlot.jsx';
 
 import Container from 'react-bootstrap/Container';

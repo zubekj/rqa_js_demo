@@ -1,5 +1,4 @@
 import React from 'react';
-import LoadTimeSeries from './LoadTimeSeries.jsx';
 import TimeseriesPlot from './TimeseriesPlot.jsx';
 
 import Container from 'react-bootstrap/Container';
@@ -28,7 +27,7 @@ class FalseNeighborsContext extends React.Component {
         for(var i=0; i < data.length; i++) {
             var row = new Array(data.length);
             for(var j=0; j < data.length; j++) {
-                if(i != j) {
+                if(i !== j) {
                     row[j] = Math.abs(data[i] - data[j]);
                 } else {
                     row[j] = Infinity;
