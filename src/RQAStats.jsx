@@ -3,6 +3,13 @@ import React from 'react';
 
 class RQAStats extends React.PureComponent {
 
+    handleParameterChange(event) {
+        const target = event.target;
+        const value = target.value;
+
+        if(Number(value) < 0 || !Number.isInteger(Number(value))) return false;
+    }
+
     calcRR(rpdata, minLine=2, removeMainDiag=true) {
 
         function incrementHist(hist, key) {
@@ -110,12 +117,13 @@ class RQAStats extends React.PureComponent {
 
     render() {
         const rpdata = this.props.rpdata;
+        const minLine = this.props.minLine;
+        const removeMainDiag = this.props.removeMainDiag;
 
-        let { RR, DET, L, Lmax, ENTR, TT, Vmax } = this.calcRR(rpdata);
+        let { RR, DET, L, Lmax, ENTR, TT, Vmax } = this.calcRR(rpdata, minLine, removeMainDiag);
 
         return (
             <div className="mt-5">
-                <h3>RQA measures</h3>
                 RR = {RR}<br />
                 DET = {DET}<br />
                 L = {L}<br />

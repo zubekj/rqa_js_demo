@@ -45,10 +45,10 @@ class App extends React.Component {
             </TabList>
 
             <TabPanel>
-              <RQACategoricalContext tsdata={this.state.tsdata} />
+              <RQACategoricalContext tsdata={this.state.tsdata} tsdata2={this.state.tsdata2} />
             </TabPanel>
             <TabPanel>
-              <RQAContinuousContext tsdata={this.state.tsdata} />
+              <RQAContinuousContext tsdata={this.state.tsdata} tsdata2={this.state.tsdata2} />
             </TabPanel>
             <TabPanel>
               <AverageMutualInformationContext tsdata={this.state.tsdata} />

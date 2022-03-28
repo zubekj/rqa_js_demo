@@ -19,7 +19,9 @@ class RQAContinuousContext extends React.Component {
    constructor(props) {
         super(props);
 
-        this.state = {rpdata: [], dimension: 1, delay: 1, threshold: 0.1};
+        this.state = {rpdata: [], dimension: 1, delay: 1, threshold: 0.1, minLine: 2, removeMainDiag: true};
+
+        this.lineLengthInput = React.createRef();
 
         // This binding is necessary to make `this` work in the callback
         this.handleParameterChange = this.handleParameterChange.bind(this);
@@ -40,6 +42,13 @@ class RQAContinuousContext extends React.Component {
         this.setState({[name]: value});
     }
 
+    validateLineLength(event) {
+        const target = event.target;
+        const value = target.value;
+        
+        if(Number(value) < 0 || !Number.isInteger(Number(value))) return false;
+    }
+
     calculateRplot() {
         
         function distance(x, y) {
@@ -51,6 +60,7 @@ class RQAContinuousContext extends React.Component {
         }
 
         const data = this.props.tsdata;
+        const data2 = this.props.tsdata2;
         const dim = this.state.dimension;
         const delay = this.state.delay;
         const threshold = this.state.threshold;
@@ -65,16 +75,31 @@ class RQAContinuousContext extends React.Component {
             embed.push(record);
         }
 
+        var embed2 = embed;
+
+        if(data2.length > 0) {
+            embed2 = [];    
+
+            for(i = delay*(dim-1); i < data2.length; i++) {
+                record = new Array(dim);
+                for(j = 0; j < dim; j++) {
+                    record[j] = data2[i-j*delay];
+                }
+                embed2.push(record);
+            }
+        }
+
         var res = new Array(embed.length);
         for(i = 0; i < res.length; i++) {
-            var resi = new Array(embed.length);
+            var resi = new Array(embed2.length);
             for(j = 0; j < resi.length; j++) {
-                resi[j] = Number(distance(embed[i], embed[j]) < threshold);
+                resi[j] = Number(distance(embed[i], embed2[j]) < threshold);
             }
             res[i] = resi;
         }
         
-        this.setState({rpdata: res});
+        this.setState({rpdata: res, minLine: this.lineLengthInput.current.value,
+                       removeMainDiag: this.props.tsdata2.length === 0});
     }
 
     renderRQAParameters() {
@@ -114,12 +139,25 @@ class RQAContinuousContext extends React.Component {
 
     render() {
         const rpdata = this.state.rpdata;
+        const minLine = this.state.minLine;
 
         return (
             <Container>
                 {this.renderRQAParameters()}
                 <Row>
-                    <Col sm={3}><RQAStats rpdata={rpdata} />
+                    <Col sm={3}>
+                    <h3>{this.props.tsdata2.length > 0 ? "Cross-RQA measures" : "RQA measures"}</h3>
+                    <RQAStats rpdata={rpdata} minLine={minLine} removeMainDiag={this.state.removeMainDiag} />
+                    
+                    <form>
+                    <div className="form-group row">
+                    <label htmlFor="lineLength" className="col-sm-4 col-form-label">Minimum line length:</label>
+                    <div className="col-sm-1">
+                    <input type="number" id="lineLength" name="lineLength" step="1" defaultValue="2" ref={this.lineLengthInput} onChange={this.validateLineLength} />
+                    </div>
+                    </div>
+                    </form>
+
                     <button onClick={this.calculateRplot}>Run RQA</button>
                     </Col>
                     <Col><RPlot rpdata={rpdata} /></Col>
