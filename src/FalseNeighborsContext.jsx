@@ -74,34 +74,38 @@ class FalseNeighborsContext extends React.Component {
 
     render() {
         return (
-        <Container>
-            <Row>
-                <Col sm={3}>
-                <h2>False neighbors analysis</h2>
+        <Container className="mb-5">
+            <Row className="mt-4">
+                <Col lg={3}>
+                <h2>False neighbors</h2>
                 <Row>
-                <Col sm={12}>
+                <Col>
                     <form>
                         <div className="form-group row">
-                            <label htmlFor="maxDim" className="col-sm-4 col-form-label">Maximum dimensionality:</label>
-                            <div className="col-sm-2">
-                                <input type="number" id="maxDim" name="maxDim" step="1" value={this.state.maxDim} onChange={this.handleParameterChange} />
+                            <label htmlFor="maxDim" className="col-sm-8 col-form-label">Maximum dimensionality:</label>
+                            <div className="col-sm-4">
+                                <input type="number" id="maxDim" name="maxDim" className="w-100" step="1" value={this.state.maxDim} onChange={this.handleParameterChange} />
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label htmlFor="delay" className="col-sm-4 col-form-label">Delay:</label>
-                            <div className="col-sm-2">
-                                <input type="number" id="delay" name="delay" step="1" value={this.state.delay} onChange={this.handleParameterChange} />
+                            <label htmlFor="delay" className="col-sm-8 col-form-label">Delay:</label>
+                            <div className="col-sm-4">
+                                <input type="number" id="delay" name="delay" className="w-100" step="1" value={this.state.delay} onChange={this.handleParameterChange} />
                             </div>
                         </div>
                     </form> 
                     <div className="form-group row">
-                        <button onClick={this.updateFalseNeighbors}>Run FN analysis</button>
+                        <button onClick={this.updateFalseNeighbors} className="w-50">Run FN analysis</button>
                     </div>
                 </Col>
                 </Row>
 
                 </Col>
-                <Col><TimeseriesPlot tsdata={this.state.fnData} /></Col>
+                <Col lg={9}>
+                    <div className="mt-5">
+                    <TimeseriesPlot tsdata={this.state.fnData} delay={0} dimension={1} />
+                    </div>
+                </Col>
             </Row>
         </Container>
         );

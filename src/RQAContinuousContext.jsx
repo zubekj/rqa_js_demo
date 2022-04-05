@@ -19,12 +19,13 @@ class RQAContinuousContext extends React.Component {
    constructor(props) {
         super(props);
 
-        this.state = {rpdata: [], dimension: 1, delay: 1, threshold: 0.1, minLine: 2, removeMainDiag: true};
+        this.state = {rpdata: [], dimension: 1, delay: 1, threshold: 0.1, minLine: 2, removeMainDiag: true, thresholdType: "absolute"};
 
         this.lineLengthInput = React.createRef();
 
         // This binding is necessary to make `this` work in the callback
         this.handleParameterChange = this.handleParameterChange.bind(this);
+        this.setRadioValue = this.setRadioValue.bind(this);
         this.calculateRplot = this.calculateRplot.bind(this);
     }
 
@@ -38,8 +39,19 @@ class RQAContinuousContext extends React.Component {
         } else if(name === "threshold") {
             if(Number(value) < 0) return false;
         }
+        
+        if(name === "dimension") {
+            this.props.updateDim(Number(value));
+        } else if(name === "delay") {
+            this.props.updateDelay(Number(value));
+        } else {
+            this.setState({[name]: value});
+        }
+    }
 
-        this.setState({[name]: value});
+    setRadioValue(event) {
+        const value = event.target.value;
+        this.setState({thresholdType: value});
     }
 
     validateLineLength(event) {
@@ -49,8 +61,14 @@ class RQAContinuousContext extends React.Component {
         if(Number(value) < 0 || !Number.isInteger(Number(value))) return false;
     }
 
+
     calculateRplot() {
-        
+        function calcSD(array) {
+            const n = array.length
+            const mean = array.reduce((a, b) => Number(a) + Number(b)) / n
+            return Math.sqrt(array.map(x => Math.pow(Number(x) - mean, 2)).reduce((a, b) => a + b) / n)
+        }
+       
         function distance(x, y) {
             var r = 0.0
             for(var i = 0; i < x.length; i++) {
@@ -61,9 +79,9 @@ class RQAContinuousContext extends React.Component {
 
         const data = this.props.tsdata;
         const data2 = this.props.tsdata2;
-        const dim = this.state.dimension;
-        const delay = this.state.delay;
-        const threshold = this.state.threshold;
+        const dim = this.props.dimension;
+        const delay = this.props.delay;
+        const threshold = this.state.thresholdType === "absolute" ? this.state.threshold : this.state.threshold * calcSD(data);
 
         var embed = [];
 
@@ -105,31 +123,48 @@ class RQAContinuousContext extends React.Component {
     renderRQAParameters() {
         return (
             <Row>
-                <Col sm={12}>
-                    <div className="mt-5">
+                <Col lg={4}>
+                    <div className="mt-3">
                     <h3>Parameters</h3>
                     <p>Set embedding parameters and the recurrence threshold.</p>
                     <form>
                         <div className="form-group row">
-                            <label htmlFor="dimension" className="col-sm-2 col-form-label">Embedding dimension:</label>
+                            <label htmlFor="dimension" className="col-sm-6 col-form-label">Embedding dimension:</label>
                             <div className="col-sm-6">
-                                <input type="number" id="dimension" name="dimension" step="1" value={this.state.dimension} onChange={this.handleParameterChange} />
+                                <input type="number" id="dimension" name="dimension" className="w-75" step="1" value={this.props.dimension} onChange={this.handleParameterChange} />
                             </div>
                         </div>
 
                         <div className="form-group row">
-                            <label htmlFor="delay" className="col-sm-2 col-form-label">Embedding delay:</label>
+                            <label htmlFor="delay" className="col-sm-6 col-form-label">Embedding delay:</label>
                             <div className="col-sm-6">
-                                <input type="number" id="delay" name="delay" step="1" value={this.state.delay} onChange={this.handleParameterChange} />
+                                <input type="number" id="delay" name="delay" className="w-75" step="1" value={this.props.delay} onChange={this.handleParameterChange} />
                             </div>
                         </div>
 
                         <div className="form-group row">
-                            <label htmlFor="threshold" className="col-sm-2 col-form-label">Recurrence threshold:</label>
+                            <label htmlFor="threshold" className="col-sm-6 col-form-label">Recurrence threshold:</label>
                             <div className="col-sm-6">
-                                <input type="number" id="threshold" name="threshold" step="0.1" value={this.state.threshold} onChange={this.handleParameterChange} />
+                                <input type="number" id="threshold" name="threshold" className="w-75" step="0.1" value={this.state.threshold} onChange={this.handleParameterChange} />
                             </div>
                         </div>
+
+                        Threshold type:
+                        <div className="form-group row">
+                        <div className="form-check col-sm-6 ps-sm-5">
+                          <input className="form-check-input" type="radio" name="thresholdTypeRadio" value="absolute" id="thresholdAbsolute" onChange={this.setRadioValue} defaultChecked={true} />
+                          <label className="form-check-label" htmlFor="flexRadioDefault1">
+                            absolute value
+                          </label>
+                        </div>
+                        <div className="form-check col-sm-5">
+                          <input className="form-check-input" type="radio" name="thresholdTypeRadio" value="relative" id="thresholdStd" onChange={this.setRadioValue} />
+                          <label className="form-check-label" htmlFor="flexRadioDefault2">
+                            % of SD
+                          </label>
+                        </div>
+                        </div>
+                       
                     </form> 
                     </div>
                 </Col>
@@ -144,23 +179,23 @@ class RQAContinuousContext extends React.Component {
         return (
             <Container>
                 {this.renderRQAParameters()}
-                <Row>
-                    <Col sm={3}>
+                <Row className="mt-3">
+                    <Col lg={3}>
                     <h3>{this.props.tsdata2.length > 0 ? "Cross-RQA measures" : "RQA measures"}</h3>
                     <RQAStats rpdata={rpdata} minLine={minLine} removeMainDiag={this.state.removeMainDiag} />
                     
                     <form>
-                    <div className="form-group row">
-                    <label htmlFor="lineLength" className="col-sm-4 col-form-label">Minimum line length:</label>
-                    <div className="col-sm-1">
-                    <input type="number" id="lineLength" name="lineLength" step="1" defaultValue="2" ref={this.lineLengthInput} onChange={this.validateLineLength} />
-                    </div>
+                    <div className="form-group row pb-2">
+                        <label htmlFor="lineLength" className="col-sm-8 col-form-label">Minimum line length:</label>
+                        <div className="col-sm-4">
+                        <input type="number" id="lineLength" name="lineLength" className="w-100" step="1" defaultValue="2" ref={this.lineLengthInput} onChange={this.validateLineLength} />
+                        </div>
                     </div>
                     </form>
 
                     <button onClick={this.calculateRplot}>Run RQA</button>
                     </Col>
-                    <Col><RPlot rpdata={rpdata} /></Col>
+                    <Col lg={9}><RPlot rpdata={rpdata} /></Col>
                 </Row>
             </Container>
         );

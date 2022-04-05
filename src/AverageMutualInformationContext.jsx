@@ -73,24 +73,24 @@ class AverageMutualInformationContext extends React.Component {
 
     render() {
         return (
-        <Container>
-            <Row>
-                <Col sm={3}>
+        <Container className="mb-5">
+            <Row className="mt-4">
+                <Col lg={3}>
                 <h2>AMI</h2>
                 <Row>
                 <Col sm={12}>
                     <form>
                         <div className="form-group row">
-                            <label htmlFor="maxDelay" className="col-sm-4 col-form-label">Maximum delay:</label>
-                            <div className="col-sm-2">
-                                <input type="number" id="maxDelay" name="maxDelay" step="1" value={this.state.maxDelay} onChange={this.handleParameterChange} />
+                            <label htmlFor="maxDelay" className="col-sm-6 col-form-label">Maximum delay:</label>
+                            <div className="col-sm-6">
+                                <input type="number" id="maxDelay" name="maxDelay" className="w-100" step="1" value={this.state.maxDelay} onChange={this.handleParameterChange} />
                             </div>
                         </div>
 
                         <div className="form-group row">
-                            <label htmlFor="bins" className="col-sm-4 col-form-label">Bins:</label>
-                            <div className="col-sm-2">
-                                <input type="number" id="bins" name="bins" step="1" value={this.state.bins} onChange={this.handleParameterChange} />
+                            <label htmlFor="bins" className="col-sm-6 col-form-label">Bins:</label>
+                            <div className="col-sm-6">
+                                <input type="number" id="bins" name="bins" className="w-100" step="1" value={this.state.bins} onChange={this.handleParameterChange} />
                             </div>
                         </div>
                     </form> 
@@ -98,7 +98,11 @@ class AverageMutualInformationContext extends React.Component {
                 </Row>
 
                 </Col>
-                <Col><TimeseriesPlot tsdata={this.searchDelay(this.props.tsdata)} /></Col>
+                <Col lg={9}>
+                    <div className="mt-5">
+                    <TimeseriesPlot tsdata={this.searchDelay(this.props.tsdata)} delay={0} dimension={1} />
+                    </div>
+                </Col>
             </Row>
         </Container>
         );

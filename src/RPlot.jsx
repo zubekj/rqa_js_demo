@@ -8,7 +8,7 @@ class RPlot extends React.PureComponent {
 
         return (
             <div>
-            <Plot data={[{z: rpdata, type: 'heatmap'}]} layout={{width: 800, height: 800}} />
+            <Plot data={[{z: rpdata, type: 'heatmap'}]} layout={{width: 800, height: 800, margin: {t: 30, b: 80}}} />
             </div>
         );
     }

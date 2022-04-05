@@ -57,23 +57,23 @@ class RQACategoricalContext extends React.Component {
 
         return (
             <Container>
-                <Row>
-                    <Col sm={3}>
+                <Row className="mt-4">
+                    <Col lg={3}>
                     <h3>{this.props.tsdata2.length > 0 ? "Cross-RQA measures" : "RQA measures"}</h3>
                     <RQAStats rpdata={rpdata} minLine={minLine} removeMainDiag={this.state.removeMainDiag} />
 
-                    <form>
-                    <div className="form-group row">
-                    <label htmlFor="lineLength" className="col-sm-4 col-form-label">Minimum line length:</label>
-                    <div className="col-sm-1">
-                    <input type="number" id="lineLength" name="lineLength" step="1" defaultValue="2" ref={this.lineLengthInput} onChange={this.validateLineLength} />
-                    </div>
+                     <form>
+                    <div className="form-group row pb-2">
+                        <label htmlFor="lineLength" className="col-sm-8 col-form-label">Minimum line length:</label>
+                        <div className="col-sm-4">
+                        <input type="number" id="lineLength" name="lineLength" className="w-100" step="1" defaultValue="2" ref={this.lineLengthInput} onChange={this.validateLineLength} />
+                        </div>
                     </div>
                     </form>
 
                     <button onClick={this.calculateRplot}>Run RQA</button>
                     </Col>
-                    <Col><RPlot rpdata={rpdata} /></Col>
+                    <Col lg={9}><RPlot rpdata={rpdata} /></Col>
                 </Row>
             </Container>
         );

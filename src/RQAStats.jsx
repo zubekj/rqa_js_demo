@@ -123,13 +123,13 @@ class RQAStats extends React.PureComponent {
         let { RR, DET, L, Lmax, ENTR, TT, Vmax } = this.calcRR(rpdata, minLine, removeMainDiag);
 
         return (
-            <div className="mt-5">
-                RR = {RR}<br />
-                DET = {DET}<br />
-                L = {L}<br />
+            <div className="mt-1">
+                RR = {RR.toFixed(4)}<br />
+                DET = {DET.toFixed(4)}<br />
+                L = {L.toFixed(4)}<br />
                 Lmax = {Lmax}<br />
-                ENTR = {ENTR}<br />
-                TT = {TT}<br />
+                ENTR = {ENTR.toFixed(4)}<br />
+                TT = {TT.toFixed(4)}<br />
                 Vmax = {Vmax}<br />
             </div>
         );

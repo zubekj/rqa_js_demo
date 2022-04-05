@@ -16,9 +16,11 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {tsdata: [0, 1, 0, 1], tsdata2: []};
+        this.state = {tsdata: [], tsdata2: [], delay: 1, dimension: 1};
         this.updateTSData = this.updateTSData.bind(this);
         this.updateTSData2 = this.updateTSData2.bind(this);
+        this.updateDim = this.updateDim.bind(this);
+        this.updateDelay = this.updateDelay.bind(this);
     }
 
     updateTSData(data) {
@@ -29,13 +31,21 @@ class App extends React.Component {
         this.setState({tsdata2: data});
     }
 
+    updateDelay(value) {
+        this.setState({delay: value});
+    }
+
+    updateDim(value) {
+        this.setState({dimension: value});
+    }
 
     render() {
       return (
         <div className="App">
         <Container>
           <LoadTimeSeries tsdata={this.state.tsdata} tsdata2={this.state.tsdata2}
-            updateTSData={this.updateTSData} updateTSData2={this.updateTSData2} />
+            updateTSData={this.updateTSData} updateTSData2={this.updateTSData2}
+            delay={this.state.delay} dimension={this.state.dimension} />
           <Tabs>
             <TabList>
               <Tab>Categorical RQA</Tab>
@@ -48,7 +58,9 @@ class App extends React.Component {
               <RQACategoricalContext tsdata={this.state.tsdata} tsdata2={this.state.tsdata2} />
             </TabPanel>
             <TabPanel>
-              <RQAContinuousContext tsdata={this.state.tsdata} tsdata2={this.state.tsdata2} />
+              <RQAContinuousContext tsdata={this.state.tsdata} tsdata2={this.state.tsdata2}
+                updateDelay={this.updateDelay} updateDim={this.updateDim} delay={this.state.delay}
+                dimension={this.state.dimension} />
             </TabPanel>
             <TabPanel>
               <AverageMutualInformationContext tsdata={this.state.tsdata} />

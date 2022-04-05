@@ -81,8 +81,8 @@ class LoadTimeSeries extends React.Component {
     }
 
     render() {
-        const tsplot = <TimeseriesPlot tsdata={this.props.tsdata} />;
-        const tsplot2 = this.props.tsdata2.length > 0 ? <TimeseriesPlot tsdata={this.props.tsdata2} /> : null;
+        const tsplot = <TimeseriesPlot tsdata={this.props.tsdata} dimension={this.props.dimension} delay={this.props.delay} />;
+        const tsplot2 = this.props.tsdata2.length > 0 ? <TimeseriesPlot tsdata={this.props.tsdata2} dimension={this.props.dimension} delay={this.props.delay} /> : null;
        
         return (
             <div>
@@ -96,11 +96,11 @@ class LoadTimeSeries extends React.Component {
                     <ColumnSelect label="Select second column (for cRQA only):" columns={this.state.columnNames} selected={this.state.selectedColumn2} handleChange={this.handleChange2} /><br />
                     </div>
                 </Col>
-                <Col>{tsplot}</Col>
+                <Col><div className="mt-5">{tsplot}</div></Col>
             </Row>
             <Row>
                 <Col sm={3}></Col>
-                <Col>{tsplot2}</Col>
+                <Col><div className="mb-5">{tsplot2}</div></Col>
             </Row>
             </div>
         );
