@@ -19,7 +19,7 @@ class RQAContinuousContext extends React.Component {
    constructor(props) {
         super(props);
 
-        this.state = {rpdata: [], dimension: 1, delay: 1, threshold: 0.1, minLine: 2, removeMainDiag: true, thresholdType: "absolute"};
+        this.state = {rpdata: [], threshold: 0.1, minLine: 2, removeMainDiag: true, thresholdType: "absolute"};
 
         this.lineLengthInput = React.createRef();
 
@@ -33,7 +33,7 @@ class RQAContinuousContext extends React.Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-
+    
         if(name === "dimension" || name === "delay") {
             if(Number(value) < 0 || !Number.isInteger(Number(value))) return false;
         } else if(name === "threshold") {
