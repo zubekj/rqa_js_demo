@@ -43,6 +43,9 @@ class App extends React.Component {
       return (
         <div className="App">
         <Container>
+        <div className="mt-5">
+        <h1>RQA demos</h1>
+        </div>
           <LoadTimeSeries tsdata={this.state.tsdata} tsdata2={this.state.tsdata2}
             updateTSData={this.updateTSData} updateTSData2={this.updateTSData2}
             delay={this.state.delay} dimension={this.state.dimension} />
@@ -69,6 +72,9 @@ class App extends React.Component {
               <FalseNeighborsContext tsdata={this.state.tsdata} />
             </TabPanel>
           </Tabs>
+        <div className="mb-3">
+        <small>© Julian Zubek 2022</small>
+        </div>
         </Container>
         </div>
       );
