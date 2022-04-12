@@ -84,7 +84,7 @@ class RQAStats extends React.PureComponent {
         for(let key in diagHist) {
             k = Number(key);
             RR += k*diagHist[key];
-            if(key >= minLine) {
+            if(k >= minLine) {
                 DET += k*diagHist[key];
                 Lcount += diagHist[key];
             }
@@ -107,7 +107,7 @@ class RQAStats extends React.PureComponent {
         }
 
         TT = Vcount > 0 ? TT / Vcount : 0.0;
-        L = DET / Lcount;
+        L = Lcount > 0 ? DET / Lcount : 0.0;
         DET /= RR;
         RR /= rpdata.length * rpdata.length;
 
