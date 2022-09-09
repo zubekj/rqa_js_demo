@@ -51,7 +51,7 @@ class App extends React.Component {
         to choose the optimal number of dimensions you may use false neighbors heuristic.
         </p>
         <p>
-        Please note that for larger datasets calculating recurrence plots and false neigbors might take a longer time during which your browser will freeze!
+        Please note that for larger datasets calculating recurrence plots and false neighbors might take a longer time during which your browser will freeze!
         </p>
         <p>
         You might be also interested in live RQA demo on movement data from webcam: <a href="https://hill.psych.uw.edu.pl/frame_diff_rqa/" target="_blank">https://hill.psych.uw.edu.pl/frame_diff_rqa/</a>
