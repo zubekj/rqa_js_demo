@@ -91,7 +91,7 @@ class LoadTimeSeries extends React.Component {
                     <div className="mt-5">
                     <h3>Data loading</h3>
                     <p>Upload a CSV file with your time series.</p>
-                    <input type="file" id="csvFileInput" onChange={this.handleFile} accept=".csv" /><br />
+                    <input type="file" id="csvFileInput" onChange={this.handleFile} /><br />
                     <ColumnSelect label="Select column:" columns={this.state.columnNames} selected={this.state.selectedColumn} handleChange={this.handleChange} /><br />
                     <ColumnSelect label="Select second column (for cRQA only):" columns={this.state.columnNames} selected={this.state.selectedColumn2} handleChange={this.handleChange2} /><br />
                     </div>
