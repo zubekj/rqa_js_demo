@@ -39,7 +39,6 @@ class LoadTimeSeries extends React.Component {
         }
     }
 
-
     handleFile(event) {
         // Check for the various File API support.
         if (window.FileReader) {
@@ -62,6 +61,7 @@ class LoadTimeSeries extends React.Component {
         colNames.forEach(x => columns.push([]));
 
         for(var i = 1; i < allTextLines.length; i++) {
+            if(allTextLines[i] === "") continue; // Ignore empty lines
             allTextLines[i].split(",").forEach((x, j) => columns[j].push(x));
         }
         this.setState({columnNames: colNames});

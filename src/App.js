@@ -84,7 +84,7 @@ class App extends React.Component {
             </TabPanel>
           </Tabs>
         <div className="mb-3">
-        <small>© Julian Zubek 2022, <a href="https://github.com/zubekj/rqa_js_demo">https://github.com/zubekj/rqa_js_demo</a></small>
+        <small>© Julian Zubek 2024, <a href="https://github.com/zubekj/rqa_js_demo">https://github.com/zubekj/rqa_js_demo</a></small>
         </div>
         </Container>
         </div>
